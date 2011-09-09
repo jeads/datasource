@@ -19,6 +19,8 @@ out of your application layer.
    Works great when you have to scale an RDBS horizontally and cannot use an 
 ORM effectively or if you need to do this for dozens of RDBS databases in a 
 single application.
+   The only hub currently implemented is for MySQL, so all the examples 
+use that hub.  Will change if new hubs get added.
 
    -----------------------
    RDBS datasource example
@@ -84,9 +86,11 @@ single application.
    ------------------------
    Putting it all together
 
-   Note: The guts of the interface are the options available to 
-         RDBSHub.execute(), see the RDBSHub.execute() docs for 
-         a full description of the interface.
+   Note: All of these examples are using the MySQL hub because
+         that's the only hub implemented.  The guts of the 
+         interface are the options available to RDBSHub.execute(), 
+         see the RDBSHub.execute() docs for a full description of 
+         the interface.
    ------------------------
    EXAMPLE 1: Get some data using the DataHub, use when you have multiple datasources
 
@@ -208,7 +212,7 @@ single application.
                         return_type="tuple_json")
 
 ---------------------------------------
-Get Started In A Blind Animal Rage Filled Furry!
+Get Started In A Blind Animal Rage Filled Fury!
 
 ...ABARFF for short
 ---------------------------------------
@@ -263,6 +267,11 @@ DataHub.py
 
    MySQL.py
       - Data hub for MySQL databases.  Inherits from RDBSHub.  
+
+/datasource/procs
+   /mysql_procs/
+      sql.json - General SQL for applications
+      test.json - SQL for unit tests
 
 /datasource/t
 
@@ -441,6 +450,10 @@ Ex: Accessing proc in execute
    -------------------------------
    RDBS procs file
    -------------------------------
+   NOTE: Proc files with the name sql.json are assumed to be general SQL that 
+         all datasources can share.  Any other file name will be directly associated
+         with your datasource.
+
    Required keys:
 
       sql - Should be a string of SQL.  Use "?" for placeholders and 
