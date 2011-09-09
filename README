@@ -239,6 +239,46 @@ Get Started In A Blind Animal Rage Filled Furry!
 
    ##RAWRRR! That was fast##
 
+------------------
+datasource repository structure
+------------------
+DataHub.py 
+   - This class will automatically import whatever derived hub class
+     is required by the datasource.  It also provides a command line 
+     interface for testing procs and their associated output.
+
+/datasource/bases
+   - Directory for all base classes.  Base classes for new data hubs 
+     should be placed in this directory.
+
+   BaseHub.py
+      - All data hubs inherit from the BaseHub.  This module provides all
+        of the facilities for loading/parsing the datasource file.
+
+   RDBSHub.py
+      - Base class for all derived RDBS hubs inherits from BaseHub. 
+
+/datasource/hubs
+
+   MySQL.py
+      - Data hub for MySQL databases.  Inherits from RDBSHub.  
+
+/datasource/t
+
+   Unit tests for RDBS hubs require a database called `test`.  The tests create a 
+   table called `DATA_SOURCES_TEST_DATA` and load /datasource/t/test_data.txt
+   into it.
+
+   TestMySQLHub.py
+      - Unit tests for MySQLHub.py
+
+   TestDataHub.py
+      - Unit tests for DataHub.py
+
+   test_data.txt
+      - Test data for all of the unit tests. This 479K file 
+        contains tab delimited data.
+
 ----------------------------------
 Install Notes
 ----------------------------------
@@ -754,44 +794,4 @@ MySQL - This is the only derived hub currently available.  It can be imported
 Returns:
 ------------------
    An iterable object or json string depending on what the caller specified.
-
-------------------
-datasource repository structure
-------------------
-DataHub.py 
-   - This class will automatically import whatever derived hub class
-     is required by the datasource.  It also provides a command line 
-     interface for testing procs and their associated output.
-
-/datasource/bases
-   - Directory for all base classes.  Base classes for new data hubs 
-     should be placed in this directory.
-
-   BaseHub.py
-      - All data hubs inherit from the BaseHub.  This module provides all
-        of the facilities for loading/parsing the datasource file.
-
-   RDBSHub.py
-      - Base class for all derived RDBS hubs inherits from BaseHub. 
-
-/datasource/hubs
-
-   MySQL.py
-      - Data hub for MySQL databases.  Inherits from RDBSHub.  
-
-/datasource/t
-
-   Unit tests for RDBS hubs require a database called `test`.  The tests create a 
-   table called `DATA_SOURCES_TEST_DATA` and load /datasource/t/test_data.txt
-   into it.
-
-   TestMySQLHub.py
-      - Unit tests for MySQLHub.py
-
-   TestDataHub.py
-      - Unit tests for DataHub.py
-
-   test_data.txt
-      - Test data for all of the unit tests. This 479K file 
-        contains tab delimited data.
 

@@ -1,4 +1,5 @@
 import os
+import glob
 from distutils.core import setup
 
 try:
@@ -17,9 +18,10 @@ setup(name='datasource',
       author='Jonathan Eads (Jeads)',
       packages=['datasource', 'datasource.bases', 'datasource.hubs', 'datasource.t'],
       long_description=read('README'),
-      package_data={'datasource':['procs/mysql/*.json',
+      package_data={'datasource':['procs/mysql_procs/*.json',
                                   't/*.txt',
                                   '*.json',
                                   '*.txt',
                                   'README'] }
+                                  
       )
