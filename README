@@ -749,13 +749,13 @@ Parameters:
 
       dict_json - Same as dict but a json string.
 
-      list - When list is selected a list of dictionaries is returned.
+      tuple - When tuple is selected a tuple of dictionaries is returned.
 
-             [ { col1=value1, col2=value1 }, 
+             ( { col1=value1, col2=value1 }, 
                { col1=value2, col2=value2 }, 
-               { col1=value3, col2=value3} etc...]
+               { col1=value3, col2=value3} etc...)
 
-      list_json - Same as list but a json string.
+      tuple_json - Same as tuple but a json string.
 
       set - A set is returned where each item in the set is derived from the value 
             associated with the column name in key_column.  Use if you just need to 
