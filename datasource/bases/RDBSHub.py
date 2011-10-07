@@ -459,6 +459,12 @@ class RDBSHub(BaseHub):
 
             sql = sql.replace("%s%i"%(self.replaceString, i), r)
 
+      ####
+      #If any replace failed, make sure we get rid of all of
+      #the REP strings
+      ####
+      sql = re.sub( '%s%s' % (self.replaceString, '\d+'), '', sql)
+
       return sql
 
    def __getExecuteSets(self, sql, kwargs):
