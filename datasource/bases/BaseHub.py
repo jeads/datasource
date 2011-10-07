@@ -316,16 +316,12 @@ class BaseHub:
       """
       for dataSource in dataSourceStruct:
 
-         if dataSource in BaseHub.dataSources:
-            ##Data source name already exists
-            msg = "The datasource, %s, already exists!"%(dataSource) 
-            raise DataHubError(msg)
+         if dataSource not in BaseHub.dataSources:
+            ##Load the new source##
+            BaseHub.dataSources[dataSource] = dataSourceStruct[dataSource]
 
-         ##Load the new source##
-         BaseHub.dataSources[dataSource] = dataSourceStruct[dataSource]
-
-         ##Load the procs##
-         BaseHub.loadProcs(dataSource)
+            ##Load the procs##
+            BaseHub.loadProcs(dataSource)
 
    @staticmethod
    def loadBuiltinProcs(arg, dirname, names):
