@@ -83,8 +83,8 @@ class MySQL(RDBSHub):
    #a MySQL object gets destroyed.  Something to watch out for.
    #########
 
-   #def __del__(self):
-   #  self.disconnect()
+   def __del__(self):
+     self.disconnect()
 
    def getDatabases(self):
       """
