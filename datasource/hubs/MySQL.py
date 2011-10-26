@@ -129,7 +129,7 @@ class MySQL(RDBSHub):
       Parameters:
          value - The string to be escaped.
       """
-      return _mysql.escapeString(value)
+      return _mysql.escape_string(value)
 
    @RDBSHub.executeDecorator
    def execute(self, **kwargs):
