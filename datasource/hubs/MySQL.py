@@ -116,19 +116,18 @@ class MySQL(RDBSHub):
       self.execute(proc='sql.ds_use.select_database', 
                    replace=[db] )
 
-   def escapeString(self, hostType, value):
+   def escapeString(self, value):
       """
-      Pass through to mysqldb escapeString which calls mysql_real_escape_string() 
-      which escapes a string taking into account the character set.
+      Pass through to mysqldb escapeString which calls mysql_escape_string().
+      Would be better to call mysql_real_escape_string() since it takes the
+      character set into account but it requires a connection object.  Connection
+      objects are only created on query execution so we need to call it through
+      the class.
 
       Parameters:
-         hostType - This is required because the escapeString function must be
-                    called on the connection object to determine the character
-                    set.
-
          value - The string to be escaped.
       """
-      return self.__connection[hostType]['con_obj'].escapeString(value)
+      return MySQLdb.escapeString(value)
 
    @RDBSHub.executeDecorator
    def execute(self, **kwargs):
