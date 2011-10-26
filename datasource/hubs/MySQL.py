@@ -10,6 +10,7 @@ except ImportError:
 
 import MySQLdb
 import MySQLdb.cursors
+import _mysql
 from _mysql_exceptions import OperationalError
 
 from datasource.bases.RDBSHub import RDBSHub, ChunkIterator, DataIterator, RDBSHubError
@@ -119,7 +120,7 @@ class MySQL(RDBSHub):
 
    def escapeString(self, value):
       """
-      Pass through to mysqldb escapeString which calls mysql_escape_string().
+      Pass through to _mysql escapeString which calls mysql_escape_string().
       Would be better to call mysql_real_escape_string() since it takes the
       character set into account but it requires a connection object.  Connection
       objects are only created on query execution so we need to call it through
@@ -128,7 +129,7 @@ class MySQL(RDBSHub):
       Parameters:
          value - The string to be escaped.
       """
-      return MySQLdb.escapeString(value)
+      return _mysql.escapeString(value)
 
    @RDBSHub.executeDecorator
    def execute(self, **kwargs):
