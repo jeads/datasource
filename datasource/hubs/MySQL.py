@@ -58,6 +58,7 @@ class MySQL(RDBSHub):
 
       __all__ = ['getDatabases', 
                  'useDatabase',
+                 'escapeString',
                  'disconnect', 
                  'execute', 
                  'getIter', 
