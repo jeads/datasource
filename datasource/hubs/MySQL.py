@@ -26,8 +26,6 @@ class MySQL(RDBSHub):
       ##These attributes are required for certain base class methods##
       self.dataSource = dataSource
       self.placeholderChar = '%s'
-      self.stringEscChar = """\""""
-      self.quoteChar = "'"
 
       self.maxConnectAttempts = 20 
       self.sleepInterval = 1
@@ -117,6 +115,20 @@ class MySQL(RDBSHub):
       """
       self.execute(proc='sql.ds_use.select_database', 
                    replace=[db] )
+
+   def escapeString(self, hostType, value):
+      """
+      Pass through to mysqldb escapeString which calls mysql_real_escape_string() 
+      which escapes a string taking into account the character set.
+
+      Parameters:
+         hostType - This is required because the escapeString function must be
+                    called on the connection object to determine the character
+                    set.
+
+         value - The string to be escaped.
+      """
+      return self.__connection[hostType]['con_obj'].escapeString(value)
 
    @RDBSHub.executeDecorator
    def execute(self, **kwargs):
