@@ -28,6 +28,7 @@ class MySQL(RDBSHub):
       self.dataSource = dataSource
       self.placeholderChar = '%s'
 
+      self.quoteChar = """'"""
       self.maxConnectAttempts = 20 
       self.sleepInterval = 1
 
@@ -300,14 +301,14 @@ class MySQL(RDBSHub):
 
             ##Let someone know this is not happening on the first try##
             if i > 0:
-               sys.stderr.write("\n%s: __tryToConnect succeeded on %i attempt. Database:" % (__name__, i, db))
+               sys.stderr.write("\n%s: __tryToConnect succeeded on %i attempt. Database:%s" % (__name__, i, db))
                sys.stderr.flush()
             ##We have a connection, move along##
             break
 
          except OperationalError, err:
             ##Connect failed, take a breather and then try again##
-            sys.stderr.write("\n%s: __tryToConnect OperationalError encountered on attempt %i. Database:" % (__name__, i, db))
+            sys.stderr.write("\n%s: __tryToConnect OperationalError encountered on attempt %i. Database:%s" % (__name__, i, db))
             sys.stderr.write("\nError detected was:\n%s\n" % (err))
             sys.stderr.flush()
             time.sleep(self.sleepInterval)

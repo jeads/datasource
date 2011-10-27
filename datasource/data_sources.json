@@ -4,7 +4,7 @@
                   ##Required##
                   "master_host": { "host":"localhost",
                                    "user":"jeads",
-                                   "passwd":"pwd" },
+                                   "passwd":"data_hub_c0d3r" },
 
                   ##Not required if you don't have one##
                   "read_host": { "host":"localhost",
