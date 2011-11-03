@@ -43,6 +43,8 @@ class MySQL(RDBSHub):
       self.validReturnTypes['tuple'] = self.getTuple
       self.validReturnTypes['tuple_json'] = self.getTupleJson
       self.validReturnTypes['set'] = self.getSet
+      self.validReturnTypes['table'] = self.getTable
+      self.validReturnTypes['table_json'] = self.getTableJson
       self.validReturnTypes['set_json'] = self.getSetJson
       self.validReturnTypes['callback'] = self.getCallback
 
@@ -225,6 +227,20 @@ class MySQL(RDBSHub):
             raise RDBSHubError(msg)
 
       return json.dumps(rowsDict)
+
+   def getTable(self, cursor, kwargs):
+
+      ##Get ordered list of column names##
+      cols = []
+      for row in cursor.description:
+         cols.append( row[0] )
+      data = cursor.fetchall()
+
+      return { 'columns':cols, 'data':data }
+
+   def getTableJson(self, cursor, kwargs):
+      dataStruct = self.getTable(cursor, kwargs)
+      return json.dumps(dataStruct)
 
    def getCallback(self, cursor, kwargs):
       callback = kwargs['callback']

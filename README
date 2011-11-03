@@ -559,7 +559,7 @@ Options:
                         of dict* or set*
     -R RETURN_TYPE, --return_type=RETURN_TYPE
                         Possible values are dict, dict_json, tuple, tuple_json,
-                        set, and set_json.  Defaults to tuple.
+                        table, table_json, set, and set_json.  Defaults to tuple.
 
   Debug Options:
     -s, --debug_show    Show SQL and other info about the query including
@@ -721,8 +721,9 @@ Parameters:
    Output related keys
    -------------------
    return_type - Possible values are 'iter', 'dict', 'dict_json', 'tuple', 'tuple_json', 
-                 'set', 'set_json', and 'callback'.  Return type selections of 'dict' 
-                 and 'callback' require additional key/value pairs.  Defaults to 'tuple'.
+                 'table', 'table_json', 'set', 'set_json', and 'callback'.  Return type 
+                 selections of 'dict' and 'callback' require additional key/value pairs.  
+                 Defaults to 'tuple'.
 
       __________________
       Return Type Explanations
@@ -756,6 +757,11 @@ Parameters:
                { col1=value3, col2=value3} etc...)
 
       tuple_json - Same as tuple but a json string.
+
+      table - Returns an ordered list of the column names along with the data.
+              { columns:[colname1, colname2, colname3], data:tuple }
+
+      table_json - Same as table but json string.
 
       set - A set is returned where each item in the set is derived from the value 
             associated with the column name in key_column.  Use if you just need to 

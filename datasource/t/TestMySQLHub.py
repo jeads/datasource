@@ -59,6 +59,8 @@ class TestMySQLHub(unittest.TestCase):
                'testTupleJsonReturnType',
                'testSetReturnType',
                'testSetJsonReturnType',
+               'testTableReturnType',
+               'testTableJsonReturnType',
                'testCallbackReturnType',
                'testChunking',
                'testRawSql',
@@ -351,6 +353,50 @@ class TestMySQLHub(unittest.TestCase):
 
       data = json.loads(j)
       rowcount = len(data)
+
+      msg = 'The items in data set, %i, do not match the row count %i.' % (rowcount, self.limit) 
+      self.assertEqual(rowcount, self.limit, msg=msg)
+
+   def testTableReturnType(self):
+
+      dh = MySQL(self.dataSource)
+
+      data = dh.execute( db=self.db,
+                         proc="test.get_data",
+                         limit=self.limit,
+                         return_type='table')
+
+      if 'columns' not in data:
+         msg = "The columns key was not found in data."
+         self.fail(msg)
+      if 'data' not in data:
+         msg = "The data key was not found in data."
+         self.fail(msg)
+
+      rowcount = len( data['data'] )
+
+      msg = 'The items in data set, %i, do not match the row count %i.' % (rowcount, self.limit) 
+      self.assertEqual(rowcount, self.limit, msg=msg)
+
+   def testTableJsonReturnType(self):
+
+      dh = MySQL(self.dataSource)
+
+      j = dh.execute( db=self.db,
+                      proc="test.get_data",
+                      limit=self.limit,
+                      return_type='table_json')
+
+      data = json.loads(j)
+
+      if 'columns' not in data:
+         msg = "The columns key was not found in data."
+         self.fail(msg)
+      if 'data' not in data:
+         msg = "The data key was not found in data."
+         self.fail(msg)
+
+      rowcount = len( data['data'] )
 
       msg = 'The items in data set, %i, do not match the row count %i.' % (rowcount, self.limit) 
       self.assertEqual(rowcount, self.limit, msg=msg)

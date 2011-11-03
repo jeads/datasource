@@ -129,6 +129,8 @@ class RDBSHub(BaseHub):
                                 'tuple_json':None, 
                                 'set':None,
                                 'set_json':None,
+                                'table':None,
+                                'table_json':None,
                                 'callback':None }
 
       ##Dictionary of required keys for RDBS datasources##
