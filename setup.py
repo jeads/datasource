@@ -5,7 +5,7 @@ from distutils.core import setup
 try:
    import MySQLdb
 except ImportError:
-   raise Error('datasource requires the python module MySQLdb (http://sourceforge.net/projects/mysql-python/')
+   raise Exception('datasource requires the python module MySQLdb (http://sourceforge.net/projects/mysql-python/')
 
 def read(fname):
    return open(os.path.join(os.path.dirname(__file__), fname)).read()
