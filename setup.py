@@ -1,5 +1,4 @@
-import os
-import glob
+import os, stat
 from distutils.core import setup
 
 try:
@@ -9,6 +8,11 @@ except ImportError:
 
 def read(fname):
    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+#Set datas_sources.json to be readable by everyone
+dirName = os.path.dirname(__file__)
+fileName = '.' + dirName + '/datasource/data_sources.json'
+os.chmod(fileName, stat.S_IREAD|stat.S_IWRITE|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH)
 
 setup(name='datasource',
       version='0.5',
