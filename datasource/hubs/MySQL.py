@@ -271,7 +271,6 @@ class MySQL(RDBSHub):
          self.__connection[hostType]['con_obj'].commit()
          self.__connection[hostType]['con_obj'].close()
 
-         del(self.__connection[hostType])
 
    """
    Private Methods
