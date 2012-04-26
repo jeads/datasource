@@ -365,7 +365,7 @@ class RDBSHub(BaseHub):
          db = kwargs['db'] 
       elif 'default_db' in self.conf:
          db = self.conf['default_db']
-         db = kwargs['db']
+         kwargs['db'] = db
       #####
       #If we make it here and db is still not set, caller could be 
       #using explicit database names in their SQL.  If their not
