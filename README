@@ -96,7 +96,7 @@ use that hub.  Will change if new hubs get added.
 
       from datasource.DataHub import DataHub
 
-      dh = DataHub("MySQL_test")
+      dh = DataHub.get("MySQL_test")
       data = dh.execute(proc="test.get_data", # file_name.proc_name
                         return_type="tuple_json")
 
@@ -121,6 +121,7 @@ use that hub.  Will change if new hubs get added.
 
       from datasource.hubs.MySQL import MySQL
 
+      dh = MySQL("MySQL_test")
       data = dh.execute(proc="test.get_data",
                         return_type="tuple_json")
 
