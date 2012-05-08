@@ -297,13 +297,13 @@ class MySQL(RDBSHub):
          if db:
             self.__connection[hostType]['con_obj'] = MySQLdb.connect( host=self.conf[hostType]['host'],
                                                                       user=self.conf[hostType]['user'],
-                                                                      passwd=self.conf[hostType]['passwd'],
+                                                                      passwd=self.conf[hostType].get('passwd', ''),
                                                                       cursorclass=MySQLdb.cursors.DictCursor,
                                                                       db=db)
          else:
             self.__connection[hostType]['con_obj'] = MySQLdb.connect( host=self.conf[hostType]['host'],
                                                                       user=self.conf[hostType]['user'],
-                                                                      passwd=self.conf[hostType]['passwd'],
+                                                                      passwd=self.conf[hostType].get('passwd', ''),
                                                                       cursorclass = MySQLdb.cursors.DictCursor)
 
          self.__connection[hostType]['cursor'] = self.__connection[hostType]['con_obj'].cursor()

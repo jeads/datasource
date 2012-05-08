@@ -370,7 +370,14 @@ if not BaseHub.dataSources:
       procsPath = os.path.dirname(__file__).replace('bases', BaseHub.defaultProcDir)
       os.path.walk(procsPath, BaseHub.loadBuiltinProcs, {})
 
-      testDataSourcePath = os.path.dirname(__file__).replace('bases', BaseHub.defaultDataSourceFile)
+      testDataSourcePath = os.environ.get(
+         "DATASOURCES",
+         os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            BaseHub.defaultDataSourceFile
+            )
+         )
+
       BaseHub.getSources(testDataSourcePath, True)
 
       #####
