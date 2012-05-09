@@ -2,12 +2,12 @@ import os, stat
 from distutils.core import setup
 
 try:
-   import MySQLdb
+    import MySQLdb
 except ImportError:
-   raise Exception('datasource requires the python module MySQLdb (http://sourceforge.net/projects/mysql-python/')
+    raise Exception('datasource requires the python module MySQLdb (http://sourceforge.net/projects/mysql-python/')
 
 def read(fname):
-   return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 #Set datas_sources.json to be readable by everyone
 dirName = os.path.dirname(__file__)
@@ -18,7 +18,7 @@ setup(name='datasource',
       version='0.5',
       description='Data Source Encapsulation',
       license='MPL',
-      keywords = "data SQL MySQL", 
+      keywords = "data SQL MySQL",
       author='Jonathan Eads (Jeads)',
       packages=['datasource', 'datasource.bases', 'datasource.hubs', 'datasource.t'],
       long_description=read('README'),
@@ -27,5 +27,5 @@ setup(name='datasource',
                                   '*.json',
                                   '*.txt',
                                   'README'] }
-                                  
+
       )

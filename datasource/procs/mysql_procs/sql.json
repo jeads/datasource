@@ -2,7 +2,7 @@
    """
    This file contains generic SQL statements that are database independent.
    """
-   "ds_selects":{ 
+   "ds_selects":{
                "get_databases": {"""
                                  Returns all of the databases in an instance.
 
@@ -43,7 +43,7 @@
 
     },
 
-   "ds_use": { 
+   "ds_use": {
 
       "select_database": {"sql":"USE REP0" }
 
