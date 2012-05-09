@@ -67,7 +67,6 @@ class RDBSHub(BaseHub):
             wrapped function ref 
       """
       def wrapper(self, **kwargs):
-
          self.setExecuteRules(kwargs)
          self.getExecuteData(self.dataSource, kwargs)
          return func(self, **kwargs)
@@ -139,9 +138,9 @@ class RDBSHub(BaseHub):
                          req=set(['hub', 'master_host']),
                          #optional keys but if present have additional key requirements
                          databases=set(['name', 'procs']),
-                         master_host=set(['host', 'user', 'passwd']),
-                         read_host=set(['host', 'user', 'passwd']),
-                         dev_host=set(['host', 'user', 'passwd']) )
+                         master_host=set(['host', 'user']),
+                         read_host=set(['host', 'user']),
+                         dev_host=set(['host', 'user']) )
 
       ###
       #List of SQL tokens that must follow a WHERE statement
