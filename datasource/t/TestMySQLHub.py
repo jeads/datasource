@@ -564,10 +564,12 @@ class TestMySQLHub(unittest.TestCase):
             ##OOh we should have an error here##
             self.fail("\tShould have raised RDBSHubExecuteError on args:%s" % (','.join(args.keys())))
 
-if __name__ == '__main__':
-
+def main():
     ##Load test data one time##
     TestMySQLHub.loadData()
 
     suite = TestMySQLHub.getSuite()
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == '__main__':
+    main()
