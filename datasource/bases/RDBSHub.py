@@ -41,7 +41,6 @@ the terms of any one of the MPL, the GPL or the LGPL.
 import sys
 import math
 import re
-import _mysql
 
 import sys
 from datasource.bases.BaseHub import BaseHub, DataHubError
@@ -433,6 +432,10 @@ class RDBSHub(BaseHub):
         sys.stdout.write(msg)
         sys.stdout.flush()
 
+    def escapeString(self, value):
+        # Should be implemented in the subclass
+        raise NotImplemented()
+
     ######
     #Private methods
     ######
@@ -447,7 +450,7 @@ class RDBSHub(BaseHub):
                     #r could contain integers which will break join
                     #make sure we cast to strings
                     ###
-                    r = joinChar.join( map(lambda s: _mysql.escape_string(str(s)), r) )
+                    r = joinChar.join( map(lambda s: self.escapeString(str(s)), r) )
 
                 sql = sql.replace("%s%i"%(self.replaceString, i), "%s%s%s"%(self.quoteChar, r, self.quoteChar))
 
