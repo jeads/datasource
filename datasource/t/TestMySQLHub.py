@@ -63,6 +63,7 @@ class TestMySQLHub(unittest.TestCase):
                  'testTableJsonReturnType',
                  'testCallbackReturnType',
                  'testChunking',
+                 'testChunkingWithMin',
                  'testRawSql',
                  'testReplace',
                  'testReplaceQuote',
@@ -429,6 +430,23 @@ class TestMySQLHub(unittest.TestCase):
 
         msg = 'total chunk sets should be, %i, there were %i chunk sets found.' % (self.nsets, nsets)
         self.assertEqual(self.nsets, nsets, msg=msg)
+
+    def testChunkingWithMin(self):
+
+        chunkSize = 10
+        dh = MySQL(self.dataSource)
+
+        nsets = 0
+        for d in  dh.execute( db=self.db,
+                              proc="test.get_data",
+                              chunk_size=100,
+                              chunk_min=5,
+                              chunk_source='DATA_SOURCES_TEST_DATA.id'):
+
+            nsets += 1
+
+        msg = 'total chunk sets should be, %i, there were %i chunk sets found.' % (99, nsets)
+        self.assertEqual(99, nsets, msg=msg)
 
     def testRawSql(self):
 
