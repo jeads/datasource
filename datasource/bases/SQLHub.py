@@ -234,10 +234,10 @@ class SQLHub(RDBSHub):
         for hostType in SQLHub.connection:
             if SQLHub.connection[hostType]['cursor']:
                 SQLHub.connection[hostType]['cursor'].close()
-                SQLHub.connection[hostType]['cursor'] = None
 
-            SQLHub.connection[hostType]['con_obj'].commit()
-            SQLHub.connection[hostType]['con_obj'].close()
+            if SQLHub.connection[hostType]['con_obj'].open:
+                SQLHub.connection[hostType]['con_obj'].commit()
+                SQLHub.connection[hostType]['con_obj'].close()
 
 
     """
