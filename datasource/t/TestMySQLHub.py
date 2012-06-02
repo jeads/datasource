@@ -64,6 +64,7 @@ class TestMySQLHub(unittest.TestCase):
                  'testCallbackReturnType',
                  'testChunking',
                  'testChunkingWithMin',
+                 'testChunkingWithRecords',
                  'testRawSql',
                  'testReplace',
                  'testReplaceQuote',
@@ -120,7 +121,6 @@ class TestMySQLHub(unittest.TestCase):
         ###
 
         #########
-        #These are some hacky one way logic tests.
         #All tests should raise RDBSHubExecuteError
         #########
 
@@ -448,6 +448,23 @@ class TestMySQLHub(unittest.TestCase):
 
         msg = 'total chunk sets should be, %i, there were %i chunk sets found.' % (99, nsets)
         self.assertEqual(99, nsets, msg=msg)
+
+    def testChunkingWithRecords(self):
+
+        chunkSize = 10
+        dh = MySQL(self.dataSource)
+
+        nsets = 0
+        for d in  dh.execute( db=self.db,
+                              proc="test.get_data",
+                              chunk_size=5,
+                              chunk_total=50,
+                              chunk_source='DATA_SOURCES_TEST_DATA.id'):
+
+            nsets += 1
+
+        msg = 'total chunk sets should be, %i, there were %i chunk sets found.' % (10, nsets)
+        self.assertEqual(10, nsets, msg=msg)
 
     def testRawSql(self):
 

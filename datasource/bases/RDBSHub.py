@@ -92,6 +92,7 @@ class RDBSHub(BaseHub):
                               'chunk_size',
                               'chunk_source',
                               'chunk_min',
+                              'chunk_total',
                               'return_type',
                               'key_column',
                               'callback',
@@ -503,9 +504,12 @@ class RDBSHub(BaseHub):
             minId = int(min.getColumnData('min_id'))
 
         maxId = int(max.getColumnData('max_id') or 0)
+        if 'chunk_total' in kwargs:
+            maxId = minId + int(kwargs['chunk_total']) - 1
 
         ##Total rows##
         nRows = (maxId - minId + 1)
+
         ##Total sets##
         nSets = int(math.ceil(float(nRows)/float(chunkSize)))
 

@@ -683,6 +683,8 @@ Parameters:
 
    chunk_min - A minimum id to start the chunks from.  This defaults to 0.
 
+   chunk_total - A total number of records to return.  This defaults to the max id from chunk_source.
+
    Ex: Using the chunking options
 
       ######
