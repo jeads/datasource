@@ -169,7 +169,7 @@ use that hub.  Will change if new hubs get added.
       #        FROM `test`.`REP5`",
       #  }
       ####
-      repValues = ['id',
+      rep_values = ['id',
                    'auto_pfamA',
                    'go_id',
                    'term',
@@ -177,7 +177,7 @@ use that hub.  Will change if new hubs get added.
                    'DATA_SOURCES_TEST_DATA']
 
       data = dh.execute(proc="test.get_replace_quote",
-                        replace=repValues,
+                        replace=rep_values,
                         return_type="tuple_json")
 
       ####
@@ -317,7 +317,7 @@ to set that up.
 
    from datasource.bases.BaseHub import BaseHub
 
-   dataSource = { DATASOURCE_NAME : { "hub":"MySQL",
+   data_source = { DATASOURCE_NAME : { "hub":"MySQL",
                                       "master_host":{"host":HOST,
                                                     "user":USER,
                                                     "passwd":PASSWORD},
@@ -326,9 +326,9 @@ to set that up.
                                     }
    }
 
-   BaseHub.addDataSource(dataSource)
+   BaseHub.add_data_source(data_source)
 
-   The structure of dataSource should be the
+   The structure of data_source should be the
    same as the datasources file.
 
 3.) There is a data_source.json file in the datasource directory.
@@ -604,7 +604,7 @@ data = hub.execute(proc="my.awesome.proc", return_type="tuple_json")
 The caller can also provide a cursor to use instead of formulating
 a new connection to the database:
 
-hub = RDBSHub(datasource, cursor=myCursor)
+hub = RDBSHub(datasource, cursor=my_cursor)
 data = hub.execute(proc="my.awesome.proc", return_type="tuple_json")
 
 When the cursor keyword argument is provided it is up to the caller
@@ -709,22 +709,22 @@ Parameters:
       #  SELECT `id`, `auto_pfamA`, `go_id`, `term`, `category` FROM `test`.`DATA_SOURCES_TEST_DATA`
       ######
 
-      dataIter = dh.execute(proc="test.get_data",
+      data_iter = dh.execute(proc="test.get_data",
                             chunk_size=1000,
                             chunk_source="Data_SOURCES_TEST_DATA.id",
                             return_type="tuple_json"):
 
       ####
       #Data iterator will have an item number equivalent to:
-      #  rows = (maxId - minId + 1)
-      #  itemsInDataIter = rows/chunkSize
+      #  rows = (max_id - min_id + 1)
+      #  items_in_data_iter = rows/chunk_size
       ####
 
-      for data in dataIter:
+      for data in data_iter:
          #####
          #data contains 1000 rows in a array of hashes in a json string
          #####
-         doSomethingAwesome(data)
+         do_something_awesome(data)
 
    -------------------
    Output related keys
@@ -739,7 +739,7 @@ Parameters:
       ------------------
       iter - A DataHub iterator will be returned.  The iterator can be used in list
              context like any other iter but there are also additional data retrieval
-             functions like getColumnData() which return the value of a single column,
+             functions like get_column_data() which return the value of a single column,
              great when you're expecting a single value and don't want to iterate.
 
       dict - A dictionary is returned where the key is set to the column name provided in
