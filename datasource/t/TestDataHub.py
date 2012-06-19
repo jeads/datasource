@@ -49,6 +49,7 @@ class TestDataHub(unittest.TestCase):
                  'test_create_data_table',
                  'test_load_data',
                  'test_drop_table',
+                 'test_exception_on_key_violation'
                  ]
 
         return unittest.TestSuite(map(TestDataHub, tests))
@@ -137,6 +138,38 @@ class TestDataHub(unittest.TestCase):
         if self.table_name in table_set:
             msg = "The table, %s, was not dropped in %s." % (self.table_name, self.db)
             self.fail(msg)
+
+
+    def test_exception_on_key_violation(self):
+        from MySQLdb import IntegrityError
+
+        dh = DataHub.get(self.data_source)
+        dh.use_database('test')
+
+        row = [
+            5271,
+            "GO:0008270",
+            "zinc ion binding",
+            "function",
+        ]
+
+        dh.execute(
+            proc="test.insert_test_data",
+            debug_show=True,
+            placeholders=row,
+            )
+
+        try:
+            dh.execute(
+                proc="test.insert_test_data",
+                debug_show=True,
+                placeholders=row,
+                )
+            self.fail("expect an IntegrityError when inserting the same record data twice.")
+        except IntegrityError:
+            self.assertTrue(True, "expect an error when inserting the same record data twice.")
+
+
 
 def main():
     ##Load test data one time##
