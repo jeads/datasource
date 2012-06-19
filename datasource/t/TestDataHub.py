@@ -49,7 +49,6 @@ class TestDataHub(unittest.TestCase):
                  'test_create_data_table',
                  'test_load_data',
                  'test_drop_table',
-                 'test_exception_on_debug'
                  ]
 
         return unittest.TestSuite(map(TestDataHub, tests))
@@ -138,21 +137,6 @@ class TestDataHub(unittest.TestCase):
         if self.table_name in table_set:
             msg = "The table, %s, was not dropped in %s." % (self.table_name, self.db)
             self.fail(msg)
-
-
-    def test_exception_on_debug(self):
-        from MySQLdb import ProgrammingError
-        dh = DataHub.get(self.data_source)
-        dh.use_database('test')
-
-        try:
-            dh.execute(
-                sql="SELECT giant_nebula FROM universe",
-                debug_show=True,
-                )
-            self.fail("expect an exception.")
-        except ProgrammingError:
-            self.assertTrue(True, "expect an exception.")
 
 
 
