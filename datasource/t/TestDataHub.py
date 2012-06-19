@@ -146,28 +146,14 @@ class TestDataHub(unittest.TestCase):
         dh = DataHub.get(self.data_source)
         dh.use_database('test')
 
-        row = [
-            5271,
-            "GO:0008270",
-            "zinc ion binding",
-            "function",
-        ]
-
-        dh.execute(
-            proc="test.insert_test_data",
-            debug_show=True,
-            placeholders=row,
-            )
-
         try:
             dh.execute(
-                proc="test.insert_test_data",
+                sql="SELECT giant_nebula FROM universe",
                 debug_show=True,
-                placeholders=row,
                 )
-            self.fail("expect an IntegrityError when inserting the same record data twice.")
-        except IntegrityError:
-            self.assertTrue(True, "expect an error when inserting the same record data twice.")
+            self.fail("expect an exception.")
+        except:
+            self.assertTrue(True, "expect an exception.")
 
 
 
