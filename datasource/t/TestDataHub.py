@@ -49,7 +49,7 @@ class TestDataHub(unittest.TestCase):
                  'test_create_data_table',
                  'test_load_data',
                  'test_drop_table',
-                 'test_exception_on_key_violation'
+                 'test_exception_on_debug'
                  ]
 
         return unittest.TestSuite(map(TestDataHub, tests))
@@ -140,9 +140,8 @@ class TestDataHub(unittest.TestCase):
             self.fail(msg)
 
 
-    def test_exception_on_key_violation(self):
-        from MySQLdb import IntegrityError
-
+    def test_exception_on_debug(self):
+        from MySQLdb import ProgrammingError
         dh = DataHub.get(self.data_source)
         dh.use_database('test')
 
@@ -152,7 +151,7 @@ class TestDataHub(unittest.TestCase):
                 debug_show=True,
                 )
             self.fail("expect an exception.")
-        except:
+        except ProgrammingError:
             self.assertTrue(True, "expect an exception.")
 
 
