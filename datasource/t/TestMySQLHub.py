@@ -739,15 +739,10 @@ class TestMySQLHub(unittest.TestCase):
 
     def test_encoding(self):
 
-        data = u''
+        data = ''
         with open(TestMySQLHub.character_encode_file) as f:
-            data = f.read()
+            data = unicode( f.read().decode("utf-8") )
 
-        self.dh.execute(
-            db=self.db,
-            proc="test.drop_encode_table",
-            debug_show=True,
-            )
         self.dh.execute(
             db=self.db,
             proc="test.create_encode_test_table",
@@ -756,19 +751,16 @@ class TestMySQLHub(unittest.TestCase):
         self.dh.execute(
             db=self.db,
             proc="test.insert_encode_data",
-            debug_show=True,
             replace_quote=[data]
             )
         self.dh.execute(
             db=self.db,
             proc="test.get_encode_data",
-            debug_show=True,
             return_type='tuple'
             )
         self.dh.execute(
             db=self.db,
             proc="test.drop_encode_table",
-            debug_show=True,
             )
 
     def __callback_test(self, row):

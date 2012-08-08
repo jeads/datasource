@@ -446,6 +446,7 @@ class RDBSHub(BaseHub):
     def __replace_sql(self, sql, key, kwargs, quote):
         for i in range(len(kwargs[key])):
             r = kwargs[key][i]
+            r_string = u''
             if quote:
 
                 if type(r) == type([]):
@@ -454,12 +455,12 @@ class RDBSHub(BaseHub):
                     #r could contain integers which will break join
                     #make sure we cast to strings
                     ###
-                    r = join_char.join( map(lambda s: self.escape_string(s), r) )
+                    r_string = join_char.join( map(lambda s: self.escape_string(s), r) )
 
                 else:
-                    r = self.escape_string(r)
+                    r_string = self.escape_string(r)
 
-                sql = sql.replace(u"%s%i"%(self.replace_string, i), u"%s%s%s"%(self.quote_char, r, self.quote_char))
+                sql = sql.replace(u"%s%i"%(self.replace_string, i), u"%s%s%s"%(self.quote_char, r_string, self.quote_char))
 
             else:
 
