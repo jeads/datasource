@@ -456,6 +456,9 @@ class RDBSHub(BaseHub):
                     ###
                     r = join_char.join( map(lambda s: self.escape_string(s), r) )
 
+                else:
+                    r = self.escape_string(r)
+
                 sql = sql.replace(u"%s%i"%(self.replace_string, i), u"%s%s%s"%(self.quote_char, r, self.quote_char))
 
             else:
