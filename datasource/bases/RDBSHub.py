@@ -449,14 +449,14 @@ class RDBSHub(BaseHub):
             if quote:
 
                 if type(r) == type([]):
-                    join_char = "%s,%s"%(self.quote_char,self.quote_char)
+                    join_char = u"%s,%s"%(self.quote_char,self.quote_char)
                     ###
                     #r could contain integers which will break join
                     #make sure we cast to strings
                     ###
-                    r = join_char.join( map(lambda s: self.escape_string(str(s)), r) )
+                    r = join_char.join( map(lambda s: self.escape_string(s), r) )
 
-                sql = sql.replace("%s%i"%(self.replace_string, i), "%s%s%s"%(self.quote_char, r, self.quote_char))
+                sql = sql.replace(u"%s%i"%(self.replace_string, i), u"%s%s%s"%(self.quote_char, r, self.quote_char))
 
             else:
 
@@ -465,15 +465,15 @@ class RDBSHub(BaseHub):
                     #r could contain integers which will break join
                     #make sure we cast to strings
                     ###
-                    r = ",".join(map(str, r))
+                    r = u",".join(map(str, r))
 
-                sql = sql.replace("%s%i"%(self.replace_string, i), r)
+                sql = sql.replace(u"%s%i"%(self.replace_string, i), r)
 
         ####
         #If any replace failed, make sure we get rid of all of
         #the REP strings
         ####
-        sql = re.sub( '%s%s' % (self.replace_string, '\d+'), '', sql)
+        sql = re.sub( u'%s%s' % (self.replace_string, u'\d+'), u'', sql)
 
         return sql
 
