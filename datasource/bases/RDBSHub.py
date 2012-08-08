@@ -433,7 +433,7 @@ class RDBSHub(BaseHub):
             msg = "%s debug message:\n\thost:%s db:%s host_type:%s proc:%s\n\tExecuting SQL:%s\n\n"\
                   %(self.__class__, host, db, host_type, proc, sql)
 
-        sys.stdout.write(msg)
+        sys.stdout.write( unicode(msg).encode("utf-8") )
         sys.stdout.flush()
 
     def escape_string(self, value):
