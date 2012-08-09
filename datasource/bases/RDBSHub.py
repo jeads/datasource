@@ -446,9 +446,9 @@ class RDBSHub(BaseHub):
     def __replace_sql(self, sql, key, kwargs, quote):
         for i in range(len(kwargs[key])):
             r = kwargs[key][i]
-            r_string = u''
             if quote:
 
+                r_string = u''
                 if type(r) == type([]):
                     join_char = u"%s,%s"%(self.quote_char,self.quote_char)
                     ###
