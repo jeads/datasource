@@ -350,6 +350,15 @@ class DataHubError:
     def __repr__(self):
         return self.msg
 
+
+class DataSourceError (BaseException):
+    """ Problem Connecting. """
+    def __init__(self, msg):
+        self.msg = msg
+    def __repr__(self):
+        return self.msg
+
+
 class DataSourceKeyError(DataHubError):
     """Dictionary key error.  Raised when a required key or key value is not defined"""
     def __init__(self, msg):
