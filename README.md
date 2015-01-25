@@ -43,6 +43,9 @@ Ex: excerpt from data_source.json file use by the unit tests in /datasource/t::
                                      "user":"jeads",
                                      "passwd":"pwd" },
 
+                      # Optional. If set, host_type is mandatory.
+                      "require_host_type": false,
+
                       ##Not required##
                       "default_db": "test",
 
@@ -391,6 +394,10 @@ This is an excerpt of a datasource file that is used by the unit tests.
                                     "user":"jeads",
                                     "passwd":"pwd" },
 
+
+                     # Optional. If set, host_type is mandatory.
+                     "require_host_type": false,
+
                      ##Not required##
                      "default_db": "test",
 
@@ -423,6 +430,8 @@ Option definitions
 
 * ``dev_host`` - Optional, use it if you have a development only host and want to be able
          to specify connecting to it in the RDBSHub.
+
+* ``require_host_type`` - Optional, use it if you want to enforce that a host_type is set.
 
 * ``default_db`` - Optional, specifies a default database name to execute queries
            against.
