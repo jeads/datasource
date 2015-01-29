@@ -17,11 +17,11 @@ setup(
     keywords = "data SQL MySQL", 
     author='Jonathan Eads (Jeads)',
     packages=['datasource', 'datasource.bases', 'datasource.hubs', 'datasource.t'],
-    long_description=read('README'),
+    long_description=read('README.md'),
     package_data={'datasource':['procs/mysql_procs/*.json',
                                   't/*.txt',
                                   '*.json',
                                   '*.txt',
-                                  'README'] },
+                                  'README.md'] },
     **kwargs
     )
