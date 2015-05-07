@@ -82,19 +82,19 @@ class MySQL(SQLHub):
             ##No connection exists, connect##
             self.connection[host_type] = dict( con_obj=None, cursor=None)
 
+            conf = {
+                'charset': 'utf8',
+                'cursorclass': MySQLdb.cursors.DictCursor
+            }
+            conf.update(self.conf[host_type])
+
             if db:
-                self.connection[host_type]['con_obj'] = MySQLdb.connect( host=self.conf[host_type]['host'],
-                                                                          user=self.conf[host_type]['user'],
-                                                                          passwd=self.conf[host_type].get('passwd', ''),
-                                                                          charset="utf8",
-                                                                          cursorclass=MySQLdb.cursors.DictCursor,
-                                                                          db=db)
-            else:
-                self.connection[host_type]['con_obj'] = MySQLdb.connect( host=self.conf[host_type]['host'],
-                                                                          user=self.conf[host_type]['user'],
-                                                                          passwd=self.conf[host_type].get('passwd', ''),
-                                                                          charset="utf8",
-                                                                          cursorclass = MySQLdb.cursors.DictCursor)
+                conf['db'] = db
+
+            if 'passwd' not in conf:
+                conf['passwd'] = ''
+
+            self.connection[host_type]['con_obj'] = MySQLdb.connect(**conf)
 
             self.connection[host_type]['con_obj'].autocommit(False)
             self.connection[host_type]['cursor'] = self.connection[host_type]['con_obj'].cursor()
