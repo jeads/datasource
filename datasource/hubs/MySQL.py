@@ -8,7 +8,6 @@ import time
 import MySQLdb
 import MySQLdb.cursors
 
-import _mysql
 from _mysql_exceptions import OperationalError
 
 from datasource.bases.RDBSHub import RDBSHubError

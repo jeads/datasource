@@ -6,7 +6,6 @@ import sys
 import math
 import re
 
-import sys
 from datasource.bases.BaseHub import BaseHub, DataHubError
 
 

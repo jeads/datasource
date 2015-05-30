@@ -9,11 +9,6 @@ import imp
 import optparse
 import subprocess
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
-
 from datasource.bases.BaseHub import BaseHub, DataHubError, DataSourceKeyError
 
 
