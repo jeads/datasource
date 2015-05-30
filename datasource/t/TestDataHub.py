@@ -78,7 +78,7 @@ class TestDataHub(unittest.TestCase):
         BaseHub()
         if self.data_source not in BaseHub.data_sources:
             msg = "The required data source, %s, was not found in %s" % (self.data_source, BaseHub.source_list_file)
-            fail(msg)
+            self.fail(msg)
 
     def test_db_existence(self):
 
