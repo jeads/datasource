@@ -383,7 +383,7 @@ class RDBSHub(BaseHub):
             if quote:
 
                 r_string = u''
-                if type(r) == type([]):
+                if isinstance(r, list):
                     join_char = u"%s,%s" % (self.quote_char, self.quote_char)
                     # r could contain integers which will break join
                     # make sure we cast to strings
@@ -395,7 +395,7 @@ class RDBSHub(BaseHub):
 
             else:
 
-                if type(r) == type([]):
+                if isinstance(r, list):
                     # r could contain integers which will break join
                     # make sure we cast to strings
                     r = u",".join(map(str, r))

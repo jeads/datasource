@@ -190,7 +190,7 @@ def main(options, args, parser):
     dh = DataHub.get(args[0])
     d = dh.execute(**kwargs)
 
-    if type(d) == type(''):
+    if isinstance(d, str):
         # User requested json, write it to stdout but make it
         # pretty first with the -mjson.tool flag to python.
         # It's a bit hackish but could not figure out how to
