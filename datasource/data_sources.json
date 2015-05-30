@@ -3,18 +3,18 @@
 
                   ##Required##
                   "master_host": { "host":"localhost",
-                                   "user":"usrname",
-                                   "passwd":"passwd" },
+                                   "user":"root",
+                                   "passwd":"" },
 
                   ##Not required if you don't have one##
                   "read_host": { "host":"localhost",
-                                 "user":"username",
-                                 "passwd":"passwd" },
+                                 "user":"root",
+                                 "passwd":"" },
 
                   ##Not required if you don't have one##
                   "dev_host": { "host":"localhost",
-                                 "user":"username",
-                                 "passwd":"passwd" },
+                                 "user":"root",
+                                 "passwd":"" },
 
                   # Optional. If set, host_type is mandatory.
                   "require_host_type": false,

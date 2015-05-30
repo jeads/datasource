@@ -1,0 +1,12 @@
+sudo: false
+language: python
+python:
+  - "2.7"
+before_script:
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
+script:
+  - ./run-tests.py
+notifications:
+  email:
+    on_success: never
+    on_failure: always
