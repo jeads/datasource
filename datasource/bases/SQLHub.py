@@ -146,7 +146,7 @@ class SQLHub(RDBSHub):
         while(1):
             row = cursor.fetchone()
             # All done
-            if row == None:
+            if row is None:
                 break
 
             if key_column in row:
@@ -176,7 +176,7 @@ class SQLHub(RDBSHub):
         while(1):
             row = cursor.fetchone()
             # All done
-            if row == None:
+            if row is None:
                 break
             if key_column in row:
                 db_set.add(row[key_column])
@@ -193,7 +193,7 @@ class SQLHub(RDBSHub):
         while(1):
             row = cursor.fetchone()
             # All done
-            if row == None:
+            if row is None:
                 break
             if key_column in row:
                 rows_dict[row[key_column]] = None
@@ -223,7 +223,7 @@ class SQLHub(RDBSHub):
             while(1):
                 row = cursor.fetchone()
                 # All done
-                if row == None:
+                if row is None:
                     break
                 callback(row)
 
