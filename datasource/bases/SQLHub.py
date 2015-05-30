@@ -59,7 +59,7 @@ class SQLHub(RDBSHub):
         # Load the procedures
         self.load_procs(self.data_source)
 
-        __all__ = ['get_databases',
+        __all__ = ['get_databases',  # noqa
                    'use_database',
                    'escape_string',
                    'disconnect',

@@ -117,7 +117,7 @@ class RDBSHub(BaseHub):
 
         self.default_placeholder = '?'
 
-        __all__ = ['load_procs',
+        __all__ = ['load_procs',  # noqa
                    'get_proc',
                    'get_data',
                    'validate_data_source',

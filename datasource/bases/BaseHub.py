@@ -47,7 +47,7 @@ class BaseHub:
 
     def __init__(self):
         # Public Interface Methods
-        __all__ = ['get_data_source_config']
+        __all__ = ['get_data_source_config']  # noqa
 
     """
     Static Methods
