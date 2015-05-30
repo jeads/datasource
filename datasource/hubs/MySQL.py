@@ -138,4 +138,6 @@ class MySQLConnectError(RDBSHubError):
         self.data_source = data_source
 
     def __repr__(self):
-        msg = "OperationalError encountered repeatedly while connecting.  Attempted to connect %i times to data source %s and failed... Feeling kindof sad right now :-(" % (self.iter, self.data_source)
+        return ("OperationalError encountered repeatedly while connecting. "
+                "Attempted to connect %i times to data source %s and failed..."
+                "Feeling kindof sad right now :-(" % (self.iter, self.data_source))
