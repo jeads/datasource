@@ -75,7 +75,7 @@ class TestDataHub(unittest.TestCase):
     def test_parse_data_sources(self):
 
         # Instantiating base hub triggers data_sources.json parsing
-        bh = BaseHub()
+        BaseHub()
         if self.data_source not in BaseHub.data_sources:
             msg = "The required data source, %s, was not found in %s" % (self.data_source, BaseHub.source_list_file)
             fail(msg)

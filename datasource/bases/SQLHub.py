@@ -127,10 +127,6 @@ class SQLHub(RDBSHub):
         # by the base class when a caller requests chunking.
         sql_chunks = kwargs['sql_chunks']
 
-        args = False
-        if 'args' in kwargs:
-            args = kwargs['args']
-
         if not self.client_cursor:
             self.try_to_connect(host_type, db)
 

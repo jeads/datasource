@@ -246,7 +246,6 @@ class BaseHub:
         # A base name of sql allows clients to
         # store general purpose sql that is
         # available for all data sources
-        sql = False
         if fields[0] == 'sql':
             data_source = 'sql'
 
