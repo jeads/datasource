@@ -144,7 +144,9 @@ def main():
     TestDataHub.load_data()
 
     suite = TestDataHub.getSuite()
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    return True if result.wasSuccessful() else False
+
 
 if __name__ == '__main__':
     main()
