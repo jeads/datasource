@@ -7,17 +7,19 @@ except ImportError:
 
 from datasource.bases.RDBSHub import RDBSHub, ChunkIterator, DataIterator, RDBSHubError
 
+
 class SQLHub(RDBSHub):
+
     """
     Derived RDBSHub class for MySQL.  Encapsulates sql execution and data retrieval.
     """
 
     def __init__(self, data_source, **kwargs):
 
-        ##Confirms required keys for datasource config info##
+        # Confirms required keys for datasource config info
         RDBSHub.__init__(self, data_source)
 
-        ##These attributes are required for certain base class methods##
+        # These attributes are required for certain base class methods
         self.data_source = data_source
         self.placeholder_char = '%s'
 
@@ -29,7 +31,7 @@ class SQLHub(RDBSHub):
         if 'cursor' in kwargs:
             self.client_cursor = kwargs['cursor']
 
-        ##Register return_type methods##
+        # Register return_type methods
         self.valid_return_types['iter'] = self.get_iter
         self.valid_return_types['dict'] = self.get_dict
         self.valid_return_types['dict_json'] = self.get_dict_json
@@ -47,10 +49,10 @@ class SQLHub(RDBSHub):
         """
         self.connection = dict()
 
-        ##Configuration object for data source instance##
+        # Configuration object for data source instance
         self.conf = self.get_data_source_config(self.data_source)
 
-        ##Load the procedures##
+        # Load the procedures
         self.load_procs(self.data_source)
 
         __all__ = ['get_databases',
@@ -67,8 +69,8 @@ class SQLHub(RDBSHub):
                    'get_set_json',
                    'get_callback']
 
-    ##Expose commit, rollback for manual transaction support##
-    ##begin() is implicit when a cursor calls execute##
+    # Expose commit, rollback for manual transaction support
+    # begin() is implicit when a cursor calls execute
     def commit(self, host_type):
         self.connection[host_type]['con_obj'].commit()
 
@@ -87,7 +89,7 @@ class SQLHub(RDBSHub):
         Returns:
            Set of databases
         """
-        ##Retrieve databases dynamically##
+        # Retrieve databases dynamically
         dbs = self.execute(proc='sql.ds_selects.get_databases',
                            return_type='set',
                            key_column='Database')
@@ -105,22 +107,20 @@ class SQLHub(RDBSHub):
            None
         """
         self.execute(proc='sql.ds_use.select_database',
-                     replace=[db] )
+                     replace=[db])
 
     @RDBSHub.execute_decorator
     def execute(self, **kwargs):
 
-        ##These values are populated by the base class execute_decorator
+        # These values are populated by the base class execute_decorator
         host_type = kwargs['host_type']
         sql = kwargs['sql']
         db = kwargs['db']
 
         self.select_db(host_type, db)
 
-        ##########
-        #sql_chunks is a list of sql statements to execute.  It's built
-        #by the base class when a caller requests chunking.
-        ##########
+        # sql_chunks is a list of sql statements to execute.  It's built
+        # by the base class when a caller requests chunking.
         sql_chunks = kwargs['sql_chunks']
 
         args = False
@@ -145,14 +145,14 @@ class SQLHub(RDBSHub):
 
         while(1):
             row = cursor.fetchone()
-            #All done
+            # All done
             if row == None:
                 break
 
             if key_column in row:
-                rows_dict[ row[key_column] ] = row
+                rows_dict[row[key_column]] = row
             else:
-                msg = "The key_column provided, %s, does not match any of the available keys %s"%(key_column, ','.join(row.keys))
+                msg = "The key_column provided, %s, does not match any of the available keys %s" % (key_column, ','.join(row.keys))
                 raise RDBSHubError(msg)
 
         return rows_dict
@@ -175,43 +175,43 @@ class SQLHub(RDBSHub):
 
         while(1):
             row = cursor.fetchone()
-            #All done
+            # All done
             if row == None:
                 break
             if key_column in row:
                 db_set.add(row[key_column])
             else:
-                msg = "The key_column provided, %s, does not match any of the available keys %s"%(key_column, ','.join(row.keys))
+                msg = "The key_column provided, %s, does not match any of the available keys %s" % (key_column, ','.join(row.keys))
                 raise RDBSHubError(msg)
 
         return db_set
 
     def get_set_json(self, cursor, kwargs):
-        ##Sets are not serializable into json, build a dict with None for each key##
+        # Sets are not serializable into json, build a dict with None for each key
         rows_dict = dict()
         key_column = kwargs['key_column']
         while(1):
             row = cursor.fetchone()
-            #All done
+            # All done
             if row == None:
                 break
             if key_column in row:
                 rows_dict[row[key_column]] = None
             else:
-                msg = "The key_column provided, %s, does not match any of the available keys %s"%(key_column, ','.join(row.keys))
+                msg = "The key_column provided, %s, does not match any of the available keys %s" % (key_column, ','.join(row.keys))
                 raise RDBSHubError(msg)
 
         return json.dumps(rows_dict)
 
     def get_table(self, cursor, kwargs):
 
-        ##Get ordered list of column names##
+        # Get ordered list of column names
         cols = []
         for row in cursor.description:
-            cols.append( row[0] )
+            cols.append(row[0])
         data = cursor.fetchall()
 
-        return { 'columns':cols, 'data':data }
+        return {'columns': cols, 'data': data}
 
     def get_table_json(self, cursor, kwargs):
         data_struct = self.get_table(cursor, kwargs)
@@ -222,7 +222,7 @@ class SQLHub(RDBSHub):
         if cursor.rowcount > 0:
             while(1):
                 row = cursor.fetchone()
-                #All done
+                # All done
                 if row == None:
                     break
                 callback(row)
@@ -246,10 +246,10 @@ class SQLHub(RDBSHub):
                 self.connection[host_type]['con_obj'].commit()
                 self.connection[host_type]['con_obj'].close()
 
-
     """
     Private Methods
     """
+
     def connect(self, host_type, db):
         raise NotImplemented
 
@@ -266,22 +266,22 @@ class SQLHub(RDBSHub):
         else:
             cursor = self.connection[host_type]['cursor']
 
-        ##Get the proc name for debug message##
+        # Get the proc name for debug message
         proc = ""
         if 'proc' in kwargs:
             proc = kwargs['proc']
 
-        ##Caller requests no sql execution##
+        # Caller requests no sql execution
         if 'debug_noex' in kwargs:
             self.show_debug(db,
-                           self.conf[host_type]['host'],
-                           host_type,
-                           proc,
-                           sql,
-                           None)
+                            self.conf[host_type]['host'],
+                            host_type,
+                            proc,
+                            sql,
+                            None)
             return []
 
-        ##Caller wants to sql execution time##
+        # Caller wants to sql execution time
         if ('debug_show' in kwargs) and (kwargs['debug_show']):
 
             def timewrapper():
@@ -291,11 +291,11 @@ class SQLHub(RDBSHub):
             tmsg = t.timeit(1)
 
             self.show_debug(db,
-                           self.conf[host_type]['host'],
-                           host_type,
-                           proc,
-                           sql,
-                           tmsg)
+                            self.conf[host_type]['host'],
+                            host_type,
+                            proc,
+                            sql,
+                            tmsg)
         else:
             self.__cursor_execute(sql, kwargs, cursor)
 

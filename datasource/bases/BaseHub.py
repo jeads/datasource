@@ -48,39 +48,41 @@ except ImportError:
 import pprint
 import re
 
+
 class BaseHub:
+
     """
     A base class for all derived data hub classes.
     """
-    ##CLASS ATTRIBUTES##
+    # CLASS ATTRIBUTES
 
-    #Regex for removing python style comments, newlines, and tabs from a multiline string
+    # Regex for removing python style comments, newlines, and tabs from a multiline string
     comment_regex = re.compile('\"\"\".*?\"\"\"|\#.*?\n|\n|\t', re.DOTALL)
 
-    #Data structure holding all data sources
+    # Data structure holding all data sources
     data_sources = dict()
 
-    #data structure mapping data sources to associated procedures
-    procs = dict( sql=dict() )
+    # data structure mapping data sources to associated procedures
+    procs = dict(sql=dict())
 
-    #Full path to data source json file
+    # Full path to data source json file
     source_list_file = ''
 
-    #Name of environment variable pointing to the data source json file
+    # Name of environment variable pointing to the data source json file
     data_source_env = 'DATASOURCES'
 
     default_data_source_file = 'data_sources.json'
 
-    #Directory containing procs for unit tests and general sql
+    # Directory containing procs for unit tests and general sql
     default_proc_dir = 'procs'
 
-    ##List of all built in proc files##
+    # List of all built in proc files
     built_in_procs = []
 
-    ##END CLASS ATTRIBUTES##
+    # END CLASS ATTRIBUTES
 
     def __init__(self):
-        ##Public Interface Methods##
+        # Public Interface Methods
         __all__ = ['get_data_source_config']
 
     """
@@ -106,14 +108,12 @@ class BaseHub:
         data_sources = BaseHub.deserialize_json(source_file)
 
         if default_source:
-            ##Load the procs##
+            # Load the procs
             for d in data_sources:
-                ####
-                #Might eventually need a way to load these for specific
-                #sources.  This approach loads all procs into all sources
-                #but it will suffice for now...
-                ####
-                data_sources[d].update( { BaseHub.default_proc_dir:BaseHub.built_in_procs } )
+                # Might eventually need a way to load these for specific
+                # sources.  This approach loads all procs into all sources
+                # but it will suffice for now...
+                data_sources[d].update({BaseHub.default_proc_dir: BaseHub.built_in_procs})
 
         BaseHub.add_data_source(data_sources)
 
@@ -180,9 +180,9 @@ class BaseHub:
 
         msg = ""
         m_len = 0
-        ##Caller requires keys only##
+        # Caller requires keys only
         if missing_keys:
-            ##Set source name to dict_target variable name##
+            # Set source name to dict_target variable name
             if not source_name:
                 pp = pprint.PrettyPrinter(indent=3)
                 source_name = pp.pformat(dict_target)
@@ -195,9 +195,9 @@ class BaseHub:
 
             raise DataSourceKeyError(msg)
 
-        ##Caller requires key values to be defined##
+        # Caller requires key values to be defined
         if values_not_defined:
-            ##Set source name to dict_target variable name##
+            # Set source name to dict_target variable name
             if not source_name:
                 pp = pprint.PrettyPrinter(indent=4)
                 source_name = pp.pformat(dict_target)
@@ -243,26 +243,26 @@ class BaseHub:
 
             for file in BaseHub.data_sources[data_source]['procs']:
 
-                ##Load file##
+                # Load file
                 proc_file_obj = open(file)
                 try:
                     proc_file = proc_file_obj.read()
                 finally:
                     proc_file_obj.close()
 
-                ##Use file name as key##
+                # Use file name as key
                 head, tail = os.path.split(file)
                 name, ext = os.path.splitext(tail)
 
                 if name in BaseHub.procs[data_source]:
-                    ##Duplicate file name detected##
+                    # Duplicate file name detected
                     msg = 'A duplicate proc file, %s, was found in the data source %s.  Please change the file name.' % (file, data_source)
                     raise DataHubError(msg)
 
                 if 'sql.json' in file:
-                    BaseHub.procs['sql'].update( { name:BaseHub.deserialize_json(proc_file) } )
+                    BaseHub.procs['sql'].update({name: BaseHub.deserialize_json(proc_file)})
                 else:
-                    BaseHub.procs[data_source].update( { name:BaseHub.deserialize_json(proc_file) } )
+                    BaseHub.procs[data_source].update({name: BaseHub.deserialize_json(proc_file)})
 
     @staticmethod
     def get_proc(data_source, proc):
@@ -279,11 +279,9 @@ class BaseHub:
         proc_struct = None
         fields = proc.split('.')
 
-        ####
         # A base name of sql allows clients to
         # store general purpose sql that is
         # available for all data sources
-        ####
         sql = False
         if fields[0] == 'sql':
             data_source = 'sql'
@@ -317,10 +315,10 @@ class BaseHub:
         for data_source in data_source_struct:
 
             if data_source not in BaseHub.data_sources:
-                ##Load the new source##
+                # Load the new source
                 BaseHub.data_sources[data_source] = data_source_struct[data_source]
 
-                ##Load the procs##
+                # Load the procs
                 BaseHub.load_procs(data_source)
 
     @staticmethod
@@ -328,41 +326,53 @@ class BaseHub:
         for file_name in names:
             name, file_ext = os.path.splitext(file_name)
             if file_ext == '.json':
-                BaseHub.built_in_procs.append("%s/%s"%(dirname,file_name))
+                BaseHub.built_in_procs.append("%s/%s" % (dirname, file_name))
     """
     Member Functions
     """
+
     def get_data_source_config(self, data_source_name):
 
         if data_source_name in BaseHub.data_sources:
             return BaseHub.data_sources[data_source_name]
 
         msg = 'The data source, %s, was not found.  Available datasources include %s.'
-        raise DataHubError(msg%(data_source_name, ','.join(BaseHub.data_sources.keys())))
+        raise DataHubError(msg % (data_source_name, ','.join(BaseHub.data_sources.keys())))
 
 """
 Error classes
 """
+
+
 class DataHubError:
+
     """Base class for all data hub errors.  Takes an error message and returns string representation in __repr__."""
+
     def __init__(self, msg):
         self.msg = msg
+
     def __repr__(self):
         return self.msg
 
 
 class DataSourceError (BaseException):
+
     """ Problem Connecting. """
+
     def __init__(self, msg):
         self.msg = msg
+
     def __repr__(self):
         return self.msg
 
 
 class DataSourceKeyError(DataHubError):
+
     """Dictionary key error.  Raised when a required key or key value is not defined"""
+
     def __init__(self, msg):
         self.msg = msg
+
     def __repr__(self):
         return self.msg
 
@@ -371,29 +381,25 @@ if not BaseHub.data_sources:
     Initialize BaseHub class variable data only once.
     """
     if not BaseHub.data_sources:
-
-        ####
         # load the data_sources.json file
         # its used for unit tests
-        ####
         procs_path = os.path.dirname(__file__).replace('bases', BaseHub.default_proc_dir)
         os.path.walk(procs_path, BaseHub.load_builtin_procs, {})
 
         test_data_source_path = os.environ.get(
-           "DATASOURCES",
-           os.path.join(
-              os.path.dirname(os.path.dirname(__file__)),
-              BaseHub.default_data_source_file
-              )
-           )
+            "DATASOURCES",
+            os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                BaseHub.default_data_source_file
+            )
+        )
 
         BaseHub.get_sources(test_data_source_path, True)
 
-        #####
-        #Load datasource file specified by env variable
-        #####
+        # Load datasource file specified by env variable
+
         if BaseHub.data_source_env in os.environ:
             BaseHub.source_list_file = os.environ[BaseHub.data_source_env]
 
-            ##Get the data sources##
+            # Get the data sources
             BaseHub.get_sources(BaseHub.source_list_file, False)

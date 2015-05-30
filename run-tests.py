@@ -3,6 +3,7 @@
 import imp
 import os
 
+
 def is_python_test(filename):
     return os.path.splitext(filename)[1] == '.py' and filename.lower().startswith('test')
 

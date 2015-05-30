@@ -52,9 +52,10 @@ except ImportError:
 
 from datasource.bases.BaseHub import BaseHub, DataHubError, DataSourceKeyError
 
+
 class DataHub:
 
-    ##Location of all base hub derived classes##
+    # Location of all base hub derived classes
     data_hub_dir = os.path.dirname(__file__) + '/hubs/'
     """
     dict( "Module name": dict( source="full file path to module source",
@@ -73,7 +74,7 @@ class DataHub:
         Returns:
            Instance of the appropriate data hub class
         """
-        ##Find the module name##
+        # Find the module name
         module_name = None
         if data_source_name in BaseHub.data_sources:
             if 'hub' in BaseHub.data_sources[data_source_name]:
@@ -84,24 +85,24 @@ class DataHub:
         if not module_name:
             raise DataSourceNotFoundError(data_source_name)
 
-        ##Load the module##
+        # Load the module
         module = None
         if module_name in DataHub.data_hub_classes:
             mod = DataHub.data_hub_classes[module_name]
             if mod['compiled']:
-                ##Use the compiled module if we have it##
+                # Use the compiled module if we have it
                 module = imp.load_compiled(module_name, mod['compiled'])
             elif mod['source']:
                 module = imp.load_source(module_name, mod['source'])
 
         if not module:
-            ##Whoa there skippy! Something horrible has happened##
+            # Whoa there skippy! Something horrible has happened
             raise DataHubNotFoundError(module_name)
 
-        ##Get the class##
+        # Get the class
         class_ = getattr(module, module_name)
 
-        ##Yer all clear kid! instantiate the data hub class##
+        # Yer all clear kid! instantiate the data hub class
         return class_(data_source_name)
 
     @staticmethod
@@ -133,10 +134,10 @@ class DataHub:
             module_name, file_ext = os.path.splitext(file_name)
 
             if module_name == '__init__' or module_name[0] == '.':
-                #Skip __init__ files and file names beginning with a '.'
+                # Skip __init__ files and file names beginning with a '.'
                 continue
             if module_name not in DataHub.data_hub_classes:
-                DataHub.data_hub_classes[module_name] = dict( source="", compiled="" )
+                DataHub.data_hub_classes[module_name] = dict(source="", compiled="")
             if file_ext == '.pyc':
                 DataHub.data_hub_classes[module_name]['compiled'] = dirname + file_name
             if file_ext == '.py':
@@ -156,16 +157,22 @@ class DataHub:
         pp = pprint.PrettyPrinter(indent=3)
         pp.pprint(DataHub.data_hub_classes)
 
+
 class DataHubNotFoundError(DataHubError):
+
     def __init__(self, module_name):
         self.module_name = module_name
+
     def __repr__(self):
         class_keys = DataHub.data_hub_classes.keys()
         return "The DataHub class requested, %s, was not found.  The available data hub modules include: %s" % (self.module_name, ','.join(class_keys))
 
+
 class DataSourceNotFoundError(DataHubError):
+
     def __init__(self, data_source_name):
         self.data_source_name = data_source_name
+
     def __repr__(self):
         data_source_keys = DataHub.data_sources.keys()
         return "The data source requested, %s, was not found.  The available data sources include: %s" % (self.data_source_name, ','.join(data_source_keys))
@@ -181,6 +188,7 @@ if not DataHub.data_hub_classes:
                  DataHub.get_data_source_module_callback,
                  DataHub.data_hub_classes)
 
+
 def main(options, args, parser):
 
     if not len(args) == 1:
@@ -190,12 +198,10 @@ def main(options, args, parser):
 
     kwargs = dict()
 
-    ####
-    #There must be a better way of doing this! The options
-    #in the options object returned by parser.parse_args()
-    #are not directly iterable... This much
-    #hardcoding makes me sad :-(
-    ####
+    # There must be a better way of doing this! The options
+    # in the options object returned by parser.parse_args()
+    # are not directly iterable... This much
+    # hardcoding makes me sad :-(
     schar = ","
     if options.db:
         kwargs['db'] = options.db
@@ -226,24 +232,22 @@ def main(options, args, parser):
     d = dh.execute(**kwargs)
 
     if type(d) == type(''):
-        #####
-        #User requested json, write it to stdout but make it
-        #pretty first with the -mjson.tool flag to python.
-        #It's a bit hackish but could not figure out how to
-        #do this directly in this module
-        #####
+        # User requested json, write it to stdout but make it
+        # pretty first with the -mjson.tool flag to python.
+        # It's a bit hackish but could not figure out how to
+        # do this directly in this module
         proc = subprocess.Popen(['python',  '-mjson.tool'],
                                 stdout=subprocess.PIPE,
                                 stdin=subprocess.PIPE)
 
-        stdout_value = proc.communicate(input="%s"%d)
+        stdout_value = proc.communicate(input="%s" % d)
         print stdout_value[0]
     else:
-        ###
-        #All other return types available to the command line tool
-        #can be printed with pretty printer
+        # All other return types available to the command line tool
+        # can be printed with pretty printer
         pp = pprint.PrettyPrinter(indent=3)
         pp.pprint(d)
+
 
 def load_option_group(parser, options, action):
 
@@ -252,7 +256,7 @@ def load_option_group(parser, options, action):
         option = o[0]
         soption = o[1]
         help = o[2]
-        doption = '--%s'%option
+        doption = '--%s' % option
 
         if action:
             parser.add_option(soption, doption, action='store_true', dest=option, help=help)
@@ -264,33 +268,32 @@ if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.set_defaults(verbose=True)
 
-    parser.set_usage("%s [OPTIONS]...[datasource]\n\nProvides a "%os.path.split(sys.argv[0])[1]+\
-                     "command line interface to the datasource hub's\nexecute function. "+\
+    parser.set_usage("%s [OPTIONS]...[datasource]\n\nProvides a " % os.path.split(sys.argv[0])[1] +
+                     "command line interface to the datasource hub's\nexecute function. " +
                      "For more extensive docs see the README in datasource.")
 
     execute_options = (('db', '-d', 'Name of database to connect to. Optional, if set in datasource.'),
-                      ('proc', '-p', 'Name of the procedure to call.'),
-                      ('host_type', '-H', 'Possible values include master_host, read_host, or dev_host.  Defaults to master_host.'))
-
+                       ('proc', '-p', 'Name of the procedure to call.'),
+                       ('host_type', '-H', 'Possible values include master_host, read_host, or dev_host.  Defaults to master_host.'))
 
     proc_group = (('placeholders', '-P', 'A list of placeholder parameters for the proc.'),
-                ('replace', '-r', 'A list of replacements to make in the proc.'+\
+                  ('replace', '-r', 'A list of replacements to make in the proc.' +
                    'REP0, REP1, REP2, REP3 etc... in the sql.'),
-                ('replace_quote', '-q', 'Same as replace but the items from the list are quoted'),
-                ('limit', '-l', 'A limit to append to the sql as LIMIT integer.'),
-                ('offset', '-o', 'An offset to append to the sql as OFFSET integer.'),
-                ('key_column', '-k', 'table.column to use as a key_column for return_types of dict* or set*'),
-                ('return_type', '-R', 'Possible values are dict, dict_json, tuple, tuple_json, set, table, table_json, and set_json.  Defaults to list'))
+                  ('replace_quote', '-q', 'Same as replace but the items from the list are quoted'),
+                  ('limit', '-l', 'A limit to append to the sql as LIMIT integer.'),
+                  ('offset', '-o', 'An offset to append to the sql as OFFSET integer.'),
+                  ('key_column', '-k', 'table.column to use as a key_column for return_types of dict* or set*'),
+                  ('return_type', '-R', 'Possible values are dict, dict_json, tuple, tuple_json, set, table, table_json, and set_json.  Defaults to list'))
 
     debug_group = (('debug_show', '-s', 'Show SQL and other info about the query including execution time.'),
-                  ('debug_noex', '-n', 'Show SQL and other info about the query without executing it.'))
+                   ('debug_noex', '-n', 'Show SQL and other info about the query without executing it.'))
 
     load_option_group(parser, execute_options, None)
 
-    ##Group proc related options##
+    # Group proc related options
     pgroup = optparse.OptionGroup(parser, "Proc Options")
     load_option_group(pgroup, proc_group, None)
-    ##Group Debug Options##
+    # Group Debug Options
     dgroup = optparse.OptionGroup(parser, "Debug Options")
     load_option_group(dgroup, debug_group, True)
 

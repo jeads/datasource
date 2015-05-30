@@ -6,7 +6,6 @@ from datasource.bases.BaseHub import BaseHub
 from datasource.DataHub import DataHub
 
 
-
 class TestDataHub(unittest.TestCase):
 
     test_data = []
@@ -54,13 +53,10 @@ class TestDataHub(unittest.TestCase):
         return unittest.TestSuite(map(TestDataHub, tests))
 
     def setUp(self):
-
-        ####
-        #TODO:
-        #Most of the attribute initializations would be better placed
-        #in __init__.  However, I get a doc string related error when
-        #I try that from the base class, not sure why.  Skipping for now.
-        ###
+        # TODO:
+        # Most of the attribute initializations would be better placed
+        # in __init__.  However, I get a doc string related error when
+        # I try that from the base class, not sure why.  Skipping for now.
         self.test_data_rows = 0
         self.data_source = 'MySQL_test'
         self.db = 'test'
@@ -74,7 +70,7 @@ class TestDataHub(unittest.TestCase):
 
     def test_parse_data_sources(self):
 
-        ##Instantiating base hub triggers data_sources.json parsing##
+        # Instantiating base hub triggers data_sources.json parsing
         bh = BaseHub()
         if self.data_source not in BaseHub.data_sources:
             msg = "The required data source, %s, was not found in %s" % (self.data_source, BaseHub.source_list_file)
@@ -96,9 +92,9 @@ class TestDataHub(unittest.TestCase):
                    proc="test.create_table")
 
         table_set = dh.execute(db=self.db,
-                             proc="sql.ds_selects.get_tables",
-                             key_column="Tables_in_test",
-                             return_type="set")
+                               proc="sql.ds_selects.get_tables",
+                               key_column="Tables_in_test",
+                               return_type="set")
 
         if self.table_name not in table_set:
             msg = "The table, %s, was not created in %s." % (self.table_name, self.db)
@@ -109,17 +105,17 @@ class TestDataHub(unittest.TestCase):
         dh = DataHub.get(self.data_source)
         dh.use_database('test')
 
-        ##Load Data##
+        # Load Data
         for row in TestDataHub.test_data:
             dh.execute(proc="test.insert_test_data",
                        placeholders=row)
 
-        rowcount = dh.execute( db=self.db,
-                            proc="sql.ds_selects.get_row_count",
-                            replace=['auto_pfamA', self.table_name],
-                            return_type='iter').get_column_data('rowcount')
+        rowcount = dh.execute(db=self.db,
+                              proc="sql.ds_selects.get_row_count",
+                              replace=['auto_pfamA', self.table_name],
+                              return_type='iter').get_column_data('rowcount')
 
-        ##Confirm we loaded all of the rows##
+        # Confirm we loaded all of the rows
         msg = 'Row count in data file, %i, does not match row count in db %i.' % (TestDataHub.test_data_rows, rowcount)
         self.assertEqual(rowcount, TestDataHub.test_data_rows, msg=msg)
 
@@ -130,18 +126,17 @@ class TestDataHub(unittest.TestCase):
                    proc="test.drop_table")
 
         table_set = dh.execute(db=self.db,
-                             proc="sql.ds_selects.get_tables",
-                             key_column="Tables_in_test",
-                             return_type="set")
+                               proc="sql.ds_selects.get_tables",
+                               key_column="Tables_in_test",
+                               return_type="set")
 
         if self.table_name in table_set:
             msg = "The table, %s, was not dropped in %s." % (self.table_name, self.db)
             self.fail(msg)
 
 
-
 def main():
-    ##Load test data one time##
+    # Load test data one time
     TestDataHub.load_data()
 
     suite = TestDataHub.getSuite()
