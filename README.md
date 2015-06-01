@@ -313,7 +313,7 @@ Install Notes
     test database.  If you don't want to run unit tests
     then you don't need to do this.
 
-2. python setup.py install
+2. ./setup.py install
 
 BaseHub in datasource.bases needs to know where the
 datasource json file is.  There are a few options of how
@@ -352,6 +352,16 @@ to set that up.
    want to run unit tests.  You can add sources to it but be aware
    any changes made to this file could be clobbered in the future.
 
+----------------------------------
+Running the tests
+----------------------------------
+
+1. Create a test database either matching the credentials in datasource/data_sources.json or use the steps above to point to an alternative file.
+2. (Optionally) Create and activate a virtualenv
+3. $ pip install -r requirements.txt
+4. $ ./run-tests.py
+
+Note: Do not use './setup.py install' since the test runner currently errors out if the build directory exists in the repo.
 
 ----------------------------------
 
