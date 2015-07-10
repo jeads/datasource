@@ -94,20 +94,22 @@ class BaseHub:
               Returns:
                  python object without comments
         """
-        return json.loads(BaseHub.strip_python_comments(source_file))
+        return json.loads(BaseHub.clean_string(source_file))
 
     @staticmethod
-    def strip_python_comments(data_string):
+    def clean_string(data_string):
         """
-        Staticmethod that strips python style comments out of a string
+        Staticmethod that strips python style comments out of a string, and then
+        removes duplicate spaces from it.
 
            Parameters:
               data_string - Multiline string with python style comments
 
            Returns:
-              python string with comments removed
+              python string with comments & duplicate spaces removed
         """
-        return BaseHub.comment_regex.sub(" ", data_string)
+        string_without_comments = BaseHub.comment_regex.sub(" ", data_string)
+        return re.sub(' +', ' ', string_without_comments)
 
     @staticmethod
     def check_keys(req_keys, dict_target, defined=False, source_name=""):
