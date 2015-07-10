@@ -61,13 +61,8 @@ class BaseHub:
 
            Returns: None
         """
-        source_file_obj = open(source_file_path)
-
-        source_file = None
-        try:
-            source_file = source_file_obj.read()
-        finally:
-            source_file_obj.close()
+        with open(source_file_path) as f:
+            source_file = '\n'.join(line.strip() for line in f)
 
         data_sources = BaseHub.deserialize_json(source_file)
 
