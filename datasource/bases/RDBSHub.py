@@ -331,7 +331,7 @@ class RDBSHub(BaseHub):
         if 'limit' in kwargs:
             sql = "%s LIMIT %s" % (sql, str(kwargs['limit']))
         if 'offset' in kwargs:
-            sql = "%s OFFSET %s" % (sql, str(kwargs['limit']))
+            sql = "%s OFFSET %s" % (sql, str(kwargs['offset']))
 
         # Compute number of execute sets if user requests chunking
         # ORDER IS CRITICAL HERE: sql must be passed to chunk stuff
