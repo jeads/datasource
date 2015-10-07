@@ -687,7 +687,7 @@ sets the return_type to.
          in the sql.  Items in the provided list are used as the replacements
          specified, the number appended to the 'REP' string should correspond
          to the associated index in the list provided.  Replace can be used
-         in conjuction with placeholders.
+         in conjunction with placeholders.
 
 * ``replace_quote`` - Same as replace but the items from the list are quoted before
                the statement is executed.
