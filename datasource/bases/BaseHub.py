@@ -203,11 +203,8 @@ class BaseHub:
             for file in BaseHub.data_sources[data_source]['procs']:
 
                 # Load file
-                proc_file_obj = open(file)
-                try:
-                    proc_file = proc_file_obj.read()
-                finally:
-                    proc_file_obj.close()
+                with open(file) as f:
+                    proc_file = '\n'.join(line.strip() for line in f)
 
                 # Use file name as key
                 head, tail = os.path.split(file)
