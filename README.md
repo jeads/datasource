@@ -1,3 +1,7 @@
+Datasource
+==========
+[![Build Status](https://travis-ci.org/jeads/datasource.svg?branch=master)](https://travis-ci.org/jeads/datasource)
+
 Overview
 ----------------------------------
 The purpose of datasource is to encapsulate any source of data  and provide a
