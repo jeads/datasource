@@ -227,7 +227,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in iter, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
         iter = self.dh.execute(
             db=self.db,
@@ -260,7 +260,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in data dictionary, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
     def test_dict_json_return_type(self):
         j = self.dh.execute(
@@ -281,7 +281,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in data dictionary, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
     def test_tuple_return_type(self):
         data = self.dh.execute(
@@ -301,7 +301,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in data tuple, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
     def test_tuple_json_return_type(self):
         j = self.dh.execute(
@@ -320,7 +320,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in data tuple, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
     def test_set_return_type(self):
         data = self.dh.execute(db=self.db,
@@ -464,7 +464,7 @@ class TestMySQLHub(unittest.TestCase):
         self.assertEqual(rowcount, self.limit, msg=msg)
 
         msg = 'The column names in data tuple, %s, do not match %s.' % (','.join(columns), ','.join(self.columns))
-        self.assertEqual(columns, self.columns)
+        self.assertEqual(columns, self.columns, msg=msg)
 
     def test_replace(self):
 
