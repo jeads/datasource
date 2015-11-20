@@ -242,7 +242,7 @@ if __name__ == '__main__':
                   ('limit', '-l', 'A limit to append to the sql as LIMIT integer.'),
                   ('offset', '-o', 'An offset to append to the sql as OFFSET integer.'),
                   ('key_column', '-k', 'table.column to use as a key_column for return_types of dict* or set*'),
-                  ('return_type', '-R', 'Possible values are dict, dict_json, tuple, tuple_json, set, table, table_json, and set_json.  Defaults to list'))
+                  ('return_type', '-R', 'Possible values are dict, dict_json, tuple, tuple_json, set, table, table_json, set_json and rowcount.  Defaults to list'))
 
     debug_group = (('debug_show', '-s', 'Show SQL and other info about the query including execution time.'),
                    ('debug_noex', '-n', 'Show SQL and other info about the query without executing it.'))

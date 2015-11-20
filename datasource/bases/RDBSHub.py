@@ -93,6 +93,7 @@ class RDBSHub(BaseHub):
                                    'set_json': None,
                                    'table': None,
                                    'table_json': None,
+                                   'rowcount': None,
                                    'callback': None}
 
         # Dictionary of required keys for RDBS datasources

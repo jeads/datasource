@@ -66,6 +66,7 @@ class TestMySQLHub(unittest.TestCase):
                  'test_set_json_return_type',
                  'test_table_return_type',
                  'test_table_json_return_type',
+                 'test_rowcount_return_type',
                  'test_callback_return_type',
                  'test_chunking',
                  'test_chunking_with_min',
@@ -393,6 +394,27 @@ class TestMySQLHub(unittest.TestCase):
 
         msg = 'The items in data set, %i, do not match the row count %i.' % (rowcount, self.limit)
         self.assertEqual(rowcount, self.limit, msg=msg)
+
+    def test_rowcount_return_type(self):
+        rowcount_valid_update = self.dh.execute(
+            db=self.db,
+            proc="test.update_test_data_category",
+            placeholders=[1],
+            return_type='rowcount',
+        )
+        exp_rowcount_valid_update = 1
+        msg = 'number of rows updated, %i, does not match %i.' % (rowcount_valid_update, exp_rowcount_valid_update)
+        self.assertEqual(rowcount_valid_update, exp_rowcount_valid_update, msg=msg)
+
+        rowcount_invalid_update = self.dh.execute(
+            db=self.db,
+            proc="test.update_test_data_category",
+            placeholders=[99999],
+            return_type='rowcount',
+        )
+        exp_rowcount_invalid_update = 0
+        msg = 'number of rows updated, %i, does not match %i.' % (rowcount_invalid_update, exp_rowcount_invalid_update)
+        self.assertEqual(rowcount_invalid_update, exp_rowcount_invalid_update, msg=msg)
 
     def test_callback_return_type(self):
         self.dh.execute(

@@ -45,6 +45,7 @@ class SQLHub(RDBSHub):
         self.valid_return_types['table'] = self.get_table
         self.valid_return_types['table_json'] = self.get_table_json
         self.valid_return_types['set_json'] = self.get_set_json
+        self.valid_return_types['rowcount'] = self.get_rowcount
         self.valid_return_types['callback'] = self.get_callback
 
         """
@@ -216,6 +217,9 @@ class SQLHub(RDBSHub):
     def get_table_json(self, cursor, kwargs):
         data_struct = self.get_table(cursor, kwargs)
         return json.dumps(data_struct)
+
+    def get_rowcount(self, cursor, kwargs):
+        return cursor.rowcount
 
     def get_callback(self, cursor, kwargs):
         callback = kwargs['callback']

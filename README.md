@@ -601,8 +601,8 @@ This interface looks like this:
                                 of dict* or set*
             -R RETURN_TYPE, --return_type=RETURN_TYPE
                                 Possible values are dict, dict_json, tuple, tuple_json,
-                                table, table_json, set, and set_json.  Defaults to tuple.
-        
+                                table, table_json, set, set_json and rowcount.  Defaults to tuple.
+
           Debug Options:
             -s, --debug_show    Show SQL and other info about the query including
                                 execution time.
@@ -766,7 +766,7 @@ Ex: Using the chunking options
 ####Output related keys
 
 ``return_type`` - Possible values are ``iter``, ``dict``, ``dict_json``, ``tuple``, ``tuple_json``,
-             ``table``, ``table_json``, ``set``, ``set_json``, and ``callback``.  Return type
+             ``table``, ``table_json``, ``set``, ``set_json``, ``callback`` and ``rowcount``.  Return type
              selections of ``dict`` and ``callback`` require additional key/value pairs.
              Defaults to ``tuple``.
 
@@ -825,6 +825,7 @@ Ex: Using the chunking options
       key_column_value3:None,
       key_column_value4:None, etc...}
 
+``rowcount`` - The number of rows fetched or affected.
 
 ``callback`` - When a callback is specified a function reference can be provided to
          be used as a callback.  The callback will be called for every row
