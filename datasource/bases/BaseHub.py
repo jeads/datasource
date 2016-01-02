@@ -300,7 +300,7 @@ Error classes
 """
 
 
-class DataHubError:
+class DataHubError(BaseException):
 
     """Base class for all data hub errors.  Takes an error message and returns string representation in __repr__."""
 
@@ -311,7 +311,7 @@ class DataHubError:
         return self.msg
 
 
-class DataSourceError (BaseException):
+class DataSourceError(BaseException):
 
     """ Problem Connecting. """
 
