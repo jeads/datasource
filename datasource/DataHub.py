@@ -151,7 +151,7 @@ if not DataHub.data_hub_classes:
 def main(options, args, parser):
 
     if not len(args) == 1:
-        print "No datasource provided"
+        print("No datasource provided")
         parser.print_help()
         sys.exit(0)
 
@@ -200,7 +200,7 @@ def main(options, args, parser):
                                 stdin=subprocess.PIPE)
 
         stdout_value = proc.communicate(input="%s" % d)
-        print stdout_value[0]
+        print(stdout_value[0])
     else:
         # All other return types available to the command line tool
         # can be printed with pretty printer

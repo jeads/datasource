@@ -19,11 +19,11 @@ for (dirpath, dirname, filenames) in os.walk(current_directory):
         if is_python_test(filename):
             relpath = os.path.relpath(os.path.join(dirpath, filename), current_directory)
             test = __import__(os.path.splitext(relpath)[0].replace('/', '.').replace('\\', '.'), fromlist='main')
-            print '\nRunning tests in %s' % relpath
+            print('\nRunning tests in %s' % relpath)
             test_passed = test.main()
             if not test_passed:
                 failed = True
 
 if failed:
-    print '\nTests failed!'
+    print('\nTests failed!')
     sys.exit(1)
