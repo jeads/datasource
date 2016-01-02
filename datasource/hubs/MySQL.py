@@ -116,7 +116,7 @@ class MySQL(SQLHub):
                 # We have a connection, move along
                 break
 
-            except OperationalError, err:
+            except OperationalError as err:
                 # Connect failed, take a breather and then try again
                 sys.stderr.write("\n%s: try_to_connect OperationalError encountered on attempt %i. Database:%s" % (__name__, i, db))
                 sys.stderr.write("\nError detected was:\n%s\n" % (err))
