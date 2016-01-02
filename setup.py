@@ -5,13 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-
-kwargs = {}
-try:
-    from setuptools import setup
-    kwargs["install_requires"] = ["MySQL-python"]
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 
 def read(fname):
@@ -31,5 +25,5 @@ setup(
                                  '*.json',
                                  '*.txt',
                                  'README.md']},
-    **kwargs
+    install_requires=["mysqlclient"],
 )

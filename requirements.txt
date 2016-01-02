@@ -1,1 +1,3 @@
-MySQL-python
+# MySQL-python doesn't support Python 3, so it's been forked:
+# https://github.com/PyMySQL/mysqlclient-python
+mysqlclient

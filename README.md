@@ -853,8 +853,8 @@ MySQL - This is the only derived hub currently available.  It can be imported
 
         from datasource.hubs.MySQL import MySQL
 
-Hope to add some more hubs soon! This hub requires the python MySQLdb
-(http://mysql-python.sourceforge.net/).
+This hub requires the python MySQL client
+(https://github.com/PyMySQL/mysqlclient-python).
 
 ####Returns:
 
