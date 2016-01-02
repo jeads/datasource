@@ -5,7 +5,7 @@
 import os
 import sys
 import pprint
-import imp
+import importlib
 import optparse
 import subprocess
 
@@ -13,14 +13,6 @@ from datasource.bases.BaseHub import BaseHub, DataHubError, DataSourceKeyError
 
 
 class DataHub:
-
-    # Location of all base hub derived classes
-    data_hub_dir = os.path.dirname(__file__) + '/hubs/'
-    """
-    dict( "Module name": dict( source="full file path to module source",
-                               compiled="full path to compiled module if it exists" )
-    """
-    data_hub_classes = dict()
 
     @staticmethod
     def get(data_source_name):
@@ -44,18 +36,9 @@ class DataHub:
         if not module_name:
             raise DataSourceNotFoundError(data_source_name)
 
-        # Load the module
-        module = None
-        if module_name in DataHub.data_hub_classes:
-            mod = DataHub.data_hub_classes[module_name]
-            if mod['compiled']:
-                # Use the compiled module if we have it
-                module = imp.load_compiled(module_name, mod['compiled'])
-            elif mod['source']:
-                module = imp.load_source(module_name, mod['source'])
-
-        if not module:
-            # Whoa there skippy! Something horrible has happened
+        try:
+            module = importlib.import_module('datasource.hubs.%s' % module_name)
+        except ImportError:
             raise DataHubNotFoundError(module_name)
 
         # Get the class
@@ -64,58 +47,6 @@ class DataHub:
         # Yer all clear kid! instantiate the data hub class
         return class_(data_source_name)
 
-    @staticmethod
-    def get_data_source_module_callback(arg, dirname, names):
-        """
-        Callback for os.path.walk.  Loads the module name and full path to
-        the source and compiled version if it exists.  I was thinking this
-        would be a nice feature for a developer (likely me) writing a data hub class
-        so they don't have to remember to import the class in DataHub manually
-        but it feels a bit hacky...
-
-        One bit of suck associated with this is when the .pyc file is imported
-        directly python does not figure out that there is a difference between
-        it and the source, so when developing a data hub and testing through
-        DataHub the developer has to sometimes remove the .pyc file manually.
-        Probably going to get rid of this in the future if I cannot find a better
-        way to do it.
-
-        Parameters:
-           arg - additional arguments
-           dirname - directory name
-           names - list of directory contents
-
-        Returns:
-           None
-        """
-        for file_name in names:
-
-            module_name, file_ext = os.path.splitext(file_name)
-
-            if module_name == '__init__' or module_name[0] == '.':
-                # Skip __init__ files and file names beginning with a '.'
-                continue
-            if module_name not in DataHub.data_hub_classes:
-                DataHub.data_hub_classes[module_name] = dict(source="", compiled="")
-            if file_ext == '.pyc':
-                DataHub.data_hub_classes[module_name]['compiled'] = dirname + file_name
-            if file_ext == '.py':
-                DataHub.data_hub_classes[module_name]['source'] = dirname + file_name
-
-    @staticmethod
-    def show_data_hub_modules():
-        """
-        Prints a list of all available data hub classes stdout.
-
-           Parameters:
-              None
-
-           Returns:
-              None
-        """
-        pp = pprint.PrettyPrinter(indent=3)
-        pp.pprint(DataHub.data_hub_classes)
-
 
 class DataHubNotFoundError(DataHubError):
 
@@ -123,8 +54,7 @@ class DataHubNotFoundError(DataHubError):
         self.module_name = module_name
 
     def __repr__(self):
-        class_keys = DataHub.data_hub_classes.keys()
-        return "The DataHub class requested, %s, was not found.  The available data hub modules include: %s" % (self.module_name, ','.join(class_keys))
+        return "The DataHub class requested, %s, was not found." % self.module_name
 
 
 class DataSourceNotFoundError(DataHubError):
@@ -135,17 +65,6 @@ class DataSourceNotFoundError(DataHubError):
     def __repr__(self):
         data_source_keys = DataHub.data_sources.keys()
         return "The data source requested, %s, was not found.  The available data sources include: %s" % (self.data_source_name, ','.join(data_source_keys))
-
-if not DataHub.data_hub_classes:
-    """
-    Load the names and paths of all of the derived data source
-    modules available.  The class variable data_hub_classes will
-    only be loaded a single time when the DataHub is
-    imported.
-    """
-    os.path.walk(DataHub.data_hub_dir,
-                 DataHub.get_data_source_module_callback,
-                 DataHub.data_hub_classes)
 
 
 def main(options, args, parser):
