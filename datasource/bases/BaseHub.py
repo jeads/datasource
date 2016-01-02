@@ -277,11 +277,12 @@ class BaseHub:
                 BaseHub.load_procs(data_source)
 
     @staticmethod
-    def load_builtin_procs(arg, dirname, names):
-        for file_name in names:
-            name, file_ext = os.path.splitext(file_name)
-            if file_ext == '.json':
-                BaseHub.built_in_procs.append("%s/%s" % (dirname, file_name))
+    def load_builtin_procs(path):
+        for dirpath, _, filenames in os.walk(path):
+            for filename in filenames:
+                if filename.endswith('.json'):
+                    BaseHub.built_in_procs.append("%s/%s" % (dirpath, filename))
+
     """
     Member Functions
     """
@@ -336,10 +337,8 @@ if not BaseHub.data_sources:
     Initialize BaseHub class variable data only once.
     """
     if not BaseHub.data_sources:
-        # load the data_sources.json file
-        # its used for unit tests
         procs_path = os.path.dirname(__file__).replace('bases', BaseHub.default_proc_dir)
-        os.path.walk(procs_path, BaseHub.load_builtin_procs, {})
+        BaseHub.load_builtin_procs(procs_path)
 
         test_data_source_path = os.environ.get(
             "DATASOURCES",
@@ -349,10 +348,11 @@ if not BaseHub.data_sources:
             )
         )
 
+        # load the data_sources.json file
+        # its used for unit tests
         BaseHub.get_sources(test_data_source_path, True)
 
         # Load datasource file specified by env variable
-
         if BaseHub.data_source_env in os.environ:
             BaseHub.source_list_file = os.environ[BaseHub.data_source_env]
 
