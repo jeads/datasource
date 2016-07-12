@@ -9,7 +9,7 @@ import os
 kwargs = {}
 try:
     from setuptools import setup
-    kwargs["install_requires"] = ["MySQL-python"]
+    kwargs["install_requires"] = ["mysqlclient"]
 except ImportError:
     from distutils.core import setup
 
