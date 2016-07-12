@@ -19,7 +19,7 @@ def read(fname):
 
 setup(
     name='datasource',
-    version='0.10.0',
+    version='0.11.0',
     description='Data Source Encapsulation',
     license='MPL',
     keywords="data SQL MySQL",
