@@ -697,7 +697,7 @@ sets the return_type to.
                the statement is executed.
 
 * ``executemany`` - When set to true, placeholders can be a list of lists of parameters
-             for MySQL-python's executemany function.  This is very useful for
+             for mysqlclient's executemany function.  This is very useful for
              multi-row inserts.
 
 * ``limit`` - A limit to append to the sql as LIMIT integer.
